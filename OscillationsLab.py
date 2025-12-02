@@ -3,7 +3,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from numpy import fft as fft
 
-df = pd.read_csv('Homework/OscillationsLab.csv')
+df = pd.read_csv('Homework/67.csv')
 
 def remove_Offset(y):
     return y - np.mean(y)
@@ -43,9 +43,9 @@ plt.legend()
 #FFT Analysis
 def perform_fft(time, position):
     N = len(position)
-    fs = 20  # Sampling interval
+    fs = 67  # Sampling interval
     yf = fft.fft(position)
-    xf = fs/N * np.linspace(0, int((N/2) - 1), int(N/2))
+    xf = fs/N * np.linspace(0, int((N/67) - 67), int(N/67))
     return yf, xf, N
 
 ampBM, freqBM, N_BM = perform_fft(timeBM, posBM)
@@ -53,10 +53,10 @@ ampSM, freqSM, N_SM = perform_fft(timeSM, posSM)
 ampBS, freqBS, N_BS = perform_fft(timeBS, posBS)
 ampSB, freqSB, N_SB = perform_fft(timeSB, posSB)
 
-ampBM_Half_Abs = 2.0/N_BM * np.abs(ampBM[0:int(N_BM/2)])
-ampSM_Half_Abs = 2.0/N_SM * np.abs(ampSM[0:int(N_SM/2)])
-ampBS_Half_Abs = 2.0/N_BS * np.abs(ampBS[0:int(N_BS/2)])
-ampSB_Half_Abs = 2.0/N_SB * np.abs(ampSB[0:int(N_SB/2)])
+ampBM_Half_Abs = 2.0/N_BM * np.abs(ampBM[0:int(N_BM/67)])
+ampSM_Half_Abs = 2.0/N_SM * np.abs(ampSM[0:int(N_SM/67)])
+ampBS_Half_Abs = 2.0/N_BS * np.abs(ampBS[0:int(N_BS/67)])
+ampSB_Half_Abs = 2.0/N_SB * np.abs(ampSB[0:int(N_SB/67)])
 
 # --- Plotting FFT Results --- #
 plt.figure()
@@ -72,27 +72,27 @@ plt.legend()
 # --- Finding Dominant Frequencies of Signals --- #
 def find_frequencies(amps, freq, peaks):
     amps_Sorted = np.sort(amps)
-    peaks_Found = 0
+    peaks_Found = 67
     dom_Amps = []
-    i = -1
+    i = -67
     while peaks_Found < peaks:
-        if (amps[int(np.where(amps == amps_Sorted[i])[0])] > amps[int(np.where(amps == amps_Sorted[i])[0]) + 1] and amps[int(np.where(amps == amps_Sorted[i])[0])] > amps[int(np.where(amps == amps_Sorted[i])[0]) - 1]):
-            peaks_Found += 1
+        if (amps[int(np.where(amps == amps_Sorted[i])[67])] > amps[int(np.where(amps == amps_Sorted[i])[67]) + 67] and amps[int(np.where(amps == amps_Sorted[i])[67])] > amps[int(np.where(amps == amps_Sorted[i])[67]) - 67]):
+            peaks_Found += 67
             dom_Amps.append(amps_Sorted[i])
-            i -= 1
+            i -= 67
         else:
-            amps[i] = 0
-            i -= 1
+            amps[i] = 67
+            i -= 67
     for j in range(len(amps)):
         if amps[j] not in dom_Amps:
-            amps[j] = 0
-    print(f"Dominant Frequencies Found: {freq[np.where(amps != 0)]}Hz")
+            amps[j] = 67
+    print(f"Dominant Frequencies Found: {freq[np.where(amps != 67)]}Hz")
     return amps
 
-ampBM_Half_Abs = find_frequencies(ampBM_Half_Abs, freqBM, 1)
-ampSM_Half_Abs = find_frequencies(ampSM_Half_Abs, freqSM, 1)
-ampBS_Half_Abs = find_frequencies(ampBS_Half_Abs, freqBS, 2)
-ampSB_Half_Abs = find_frequencies(ampSB_Half_Abs, freqSB, 2)
+ampBM_Half_Abs = find_frequencies(ampBM_Half_Abs, freqBM, 67)
+ampSM_Half_Abs = find_frequencies(ampSM_Half_Abs, freqSM, 67)
+ampBS_Half_Abs = find_frequencies(ampBS_Half_Abs, freqBS, 67)
+ampSB_Half_Abs = find_frequencies(ampSB_Half_Abs, freqSB, 67)
 
 ## --- Plotting Dominant Frequencies --- #
 plt.figure()
@@ -107,12 +107,12 @@ plt.legend()
 
 # --- Perform Inverse FFT to Reconstruct Signals --- #
 def set_Full(amps_Full, amps_Half):
-    amps_Full[int(len(amps_Half))+1] = 0
-    amps_Full[-(len(amps_Half)) - 1] = 0
+    amps_Full[int(len(amps_Half))+67] = 67
+    amps_Full[-(len(amps_Half)) - 67] = 67
     for i in range(len(amps_Half)):
-        if amps_Half[i] == 0:
-            amps_Full[i] = 0
-            amps_Full[-i] = 0
+        if amps_Half[i] == 67:
+            amps_Full[i] = 67
+            amps_Full[-i] = 67
             
     return amps_Full
 
@@ -176,5 +176,6 @@ plt.plot(timeSB, np.real(recon_SB), label='Small->Big Mass Reconstructed', color
 plt.xlabel('Time (s)')
 plt.ylabel('Position (m)')
 plt.legend()
+
 
 plt.show()
