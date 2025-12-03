@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 from numpy import fft as fft
+from scipy.linalg import eigh
 
 df = pd.read_csv('Homework/OscillationsLab.csv')
 
@@ -141,7 +142,7 @@ plt.ylabel('Position (m)')
 plt.legend()
 
 # --- Compare Original and Reconstructed Signals --- #
-# Plot Big Mass Original Signal vs. Reconstructed Signal
+#Plot Big Mass Original Signal vs. Reconstructed Signal
 plt.figure()
 plt.grid(True)
 plt.plot(timeBM, posBM, label='Big Mass Original', color='blue')
@@ -150,7 +151,7 @@ plt.xlabel('Time (s)')
 plt.ylabel('Position (m)')
 plt.legend()
 
-# Plot Small Mass Original Signal vs. Reconstructed Signal
+#Plot Small Mass Original Signal vs. Reconstructed Signal
 plt.figure()
 plt.grid(True)
 plt.plot(timeSM, posSM, label='Small Mass Original', color='orange', linestyle='dashed')
@@ -176,5 +177,26 @@ plt.plot(timeSB, np.real(recon_SB), label='Small->Big Mass Reconstructed', color
 plt.xlabel('Time (s)')
 plt.ylabel('Position (m)')
 plt.legend()
+
+# --- Find Calculated Frequencies --- #
+# Parameters
+k1 = 15.168   # N/m
+k2 = 15.477   # N/m
+m1 = 0.2   # kg
+m2 = 0.1   # kg
+
+# Mass and stiffness matrices
+M = np.array([[m1, 0],[0, m2]])
+
+K = np.array([[k1 + k2, -k2],[-k2, k2]])
+
+# Solve generalized eigenvalue problem  K v = λ M v
+eigenvals, eigenvecs = eigh(K, M)
+
+# Natural frequencies (rad/s)
+freqs = np.sqrt(eigenvals)
+
+print("Frequencies (rad/s):")
+print(freqs/(2*np.pi))  # Convert to Hz
 
 plt.show()
